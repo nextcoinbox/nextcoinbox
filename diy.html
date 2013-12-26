@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>iBuild your own Nextcoinbox</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom CSS for the 'Heroic Features' Template -->
+    <link href="css/heroic-features.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">Home</a>
+          <a class="navbar-brand" href="diy.html">Do it yourself</a>
+          <a class="navbar-brand" href="contact.html">Contact</a>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">NXT:5817701098347234807</a></li>
+          </ul>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+          <ul class="nav navbar-nav">
+            <!--
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#contact">Contact</a></li>
+            -->
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container -->
+    </nav>
+    
+    <div class="container">
+
+      <div class="jumbotron hero-spacer">
+        <h1>Build your own live CD!</h1>
+        <p>For computer and linux savvy users, here are the instructions to duplicate this work. Be it because you want to learn from it, ot because you don't trust Nextcoinbox.</p>
+      </div>
+      
+      <hr>
+      
+      <div class="row">
+        Here are the notes I took during the setup of this live CD. The main source of inspiration was <a href="http://willhaley.com/blog/create-a-custom-debian-live-environment/">this page</a> by Will Haley. I hope this helps!
+        <!-------------------------------------------------------------------------------->
+
+        <pre>
+sudo apt-get install debootstrap syslinux squashfs-tools genisoimage memtest86+ rsync
+mkdir live_boot && cd live_boot
+sudo debootstrap --arch=amd64 --variant=minbase wheezy chroot http://ftp.us.debian.org/debian/
+sudo mount -o bind /dev chroot/dev && sudo cp /etc/resolv.conf chroot/etc/resolv.conf
+
+sudo chroot chroot
+mount none -t proc /proc && 
+mount none -t sysfs /sys && 
+mount none -t devpts /dev/pts && 
+export HOME=/root && 
+export LC_ALL=C && 
+apt-get install dialog dbus --yes --force-yes&& 
+dbus-uuidgen > /var/lib/dbus/machine-id && 
+apt-get update --yes --force-yes
+
+echo "nextcoinbox-live" > /etc/hostname
+apt-get install --no-install-recommends linux-image-3.2.0-4-amd64 blackbox xserver-xorg-core xserver-xorg xinit xterm openjdk-7-jre-headless live-boot rungetty sudo nvi openbox
+
+passwd
+adduser nextcoin
+
+visudo # and add this line:
+nextcoin ALL=(ALL:ALL) NOPASSWD:/sbin/halt,/sbin/reboot
+
+
+# add bookmark:
+exit
+sudo chroot --userspec nextcoin  chroot/
+export HOME=/home/nextcoin/
+iceweasel -DISPLAY=:0.0
+exit
+
+sudo chroot chroot
+
+
+rm -f /var/lib/dbus/machine-id && 
+apt-get clean && 
+rm -rf /tmp/* && 
+rm /etc/resolv.conf && 
+umount -lf /proc && 
+umount -lf /sys && 
+umount -lf /dev/pts
+
+exit
+
+sudo umount -lf chroot/dev
+
+
+copy inittab, .xsession, .profile, start-nxt.sh, ~/nxt
+
+mkdir -p image/{live,isolinux}
+sudo mksquashfs chroot image/live/filesystem.squashfs -e boot
+
+cp chroot/boot/vmlinuz-3.2.0-4-amd64 image/live/vmlinuz1
+cp chroot/boot/initrd.img-3.2.0-4-amd64 image/live/initrd1
+
+
+cat > image/isolinux/isolinux.cfg <&lt;EOF
+UI menu.c32
+
+prompt 0
+menu title Nextcoinbox Live
+
+timeout 1
+
+label Debian Live 3.2.0-4-amd64
+menu label ^Debian Live 3.2.0-4-amd64
+menu default
+kernel /live/vmlinuz1
+append initrd=/live/initrd1 boot=live
+EOF
+
+
+cp /usr/lib/syslinux/isolinux.bin image/isolinux/
+cp /usr/lib/syslinux/menu.c32 image/isolinux/
+
+
+cd image && genisoimage -rational-rock -volid "Debian Live" -cache-inodes -joliet -full-iso9660-filenames -b isolinux/isolinux.bin -c isolinux/boot.cat -no-emul-boot -boot-load-size 4 -boot-info-table -output ../debian-live.iso . && cd ..
+
+
+
+boot on cd, access nrs and accept certificated, then
+tar zcvf mozilla.tgz .mozilla
+apt-get install openssh-client
+scp mozilla.tgz myuser@mypc:/tmp
+copy the .mozilla to /home/nextcoin so that certificate will be accepted.
+
+create /etc/X11/xorg.conf with the content below.
+
+
+
+kvm -m 1024  -boot d -cdrom debian-live.iso -vga vmware
+kvm -m 1024  -boot d -cdrom debian-live.iso -vga std
+
+
+
+
+###################################
+/etc/X11/xorg.conf:
+-----------------------------------
+Section "ServerLayout"
+        Identifier     "BodhiZazen's KVM xorg.conf"
+        Screen      0  "Screen0" 0 0
+        InputDevice    "Mouse0" "CorePointer"
+        InputDevice    "Keyboard0" "CoreKeyboard"
+EndSection
+
+Section "Module"
+        Load  "record"
+        Load  "dri"
+        Load  "extmod"
+        Load  "glx"
+        Load  "dbe"
+        Load  "dri2"
+EndSection
+
+Section "InputDevice"
+        Identifier  "Keyboard0"
+        Driver      "kbd"
+EndSection
+
+Section "InputDevice"
+        Identifier  "Mouse0"
+        Driver      "vmmouse"
+        Option      "Protocol" "SysMouse"
+        Option      "Device" "/dev/sysmouse"
+        Option      "ZAxisMapping" "4 5 6 7"
+EndSection
+
+Section "Monitor"
+        Identifier   "Monitor0"
+        VendorName   "Monitor Vendor"
+        ModelName    "Monitor Model"
+        HorizSync       20.0 - 50.0
+        VertRefresh     40.0 - 80.0
+        Option          "DPMS"
+
+EndSection
+
+Section "Device"
+        Identifier  "Card0"
+        Driver      "vesa"
+        VendorName  "KVM - std"
+        BoardName   "GD 5446"
+        BusID       "PCI:0:2:0"
+EndSection
+
+Section "Screen"
+        Identifier "Screen0"
+        Device     "Card0"
+        Monitor    "Monitor0"
+        SubSection "Display"
+                Viewport   0 0
+                Modes "1600x1200"
+        EndSubSection
+EndSection
+
+############################################
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+
+
+
+        <!-------------------------------------------------------------------------------->
+
+      <hr>
+
+      <footer>
+        <div class="row">
+          <div class="col-lg-12">
+            <p>Copyright &copy; Nextcoinbox 2013</p>
+          </div>
+        </div>
+      </footer>
+      
+    </div><!-- /.container -->
+
+    <!-- JavaScript -->
+    <script src="js/jquery-1.10.2.js"></script>
+    <script src="js/bootstrap.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-305465-22', 'nextcoinbox.github.io');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+
+</html>
