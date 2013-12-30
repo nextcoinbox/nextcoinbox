@@ -51,34 +51,48 @@
 
       <div class="jumbotron hero-spacer">
         <h1>Securely manage your Nextcoins!</h1>
-        <p>Nextcoinbox is a live CD set up to give you easy access to your Nextcoin wallet in a secured and isolated environment. When booting on this live CD (be it a virtual machine or a computer), the Nextcoin service gets started, and a browser opens to let you access the wallet. Closing the browser halt the virtual machine. This gives a very smooth experience, try it now! (running nxt 0.4.7e)</p>
-        <p><a class="btn btn-primary btn-large" href="https://mega.co.nz/#!8pZz2QyS!BOeOsj2FOwZ7HDboPYpnXkZPof8YqJyPQ3gfjSlM8x0">Download! (214Mb)</a>(sha256: c26d6ffed66b4cef0180dfa908edfa1eaff8e2280b579511b37eb455377405f3)</p>
+        <p>Nextcoinbox is developed to help run the Nxt software in a safe and isolated environment, limiting the risk of loosing nextcoins due to malware. Two options are available below: a customised live CD, or a script to run in your favorite linux environment. 
       </div>
       
       <hr>
-      
-      <div class="row">
-        <div class="col-lg-12">
-           <h3>Presentation</h3>
-           <p>When you have downloaded the ISO, attach the ISO as the CD drive of a virtual machine, and start it. You then get a welcome page displayed in the browser, with a bookmark already setup to access the NextCoin wallet.</p>
-           <p>If the wallet does not load successfully, wait a bit and try again. It might be the Nextcoin service was not started yet.</p>
-           <p>This live CD can be used with any virtualisation technology, for example <a href="http://www.linux-kvm.org/page/Main_Page">kvm</a>, <a href="http://www.xenproject.org/">Xen</a>, <a href="http://www.vmware.com/">Vmware</a>, <a href="https://www.virtualbox.org/">Virtualbox</a>, etc... </p>
-           <p>If you prefer, you can also burn it on a CD and boot any computer on it. This is your Nextcoin wallet on the go!</p>
-        </div>
-      </div><!-- /.row -->
-      
+
+
       <div class="row text-center">
 
-        <div class="col-lg-3 col-md-6 hero-feature">
+        <div class="col-lg-12 col-md-12 hero-feature">
           <div class="thumbnail">
-            <img src="http://www.debian.org/logos/openlogo-100.jpg" alt="">
             <div class="caption">
-              <h3>Based on Debian</h3>
+              <h1>Option 1: Custom live CD</h1>
               <p>The live CD was built on a plain Debian GNU/Linux distribution.</p>
+              <p>When booted (be it a virtual machine or a computer), the live CD automatically starts the Nextcoin service, and opens a browser to let you access the wallet. Closing the browser halts the virtual machine. This gives a very smooth experience, try it now! (running nxt 0.4.7e)</p>
+              <p><a class="btn btn-primary btn-large" href="https://mega.co.nz/#!8pZz2QyS!BOeOsj2FOwZ7HDboPYpnXkZPof8YqJyPQ3gfjSlM8x0">Download! (214Mb)</a></p> 
+              <p><small>(sha256: c26d6ffed66b4cef0180dfa908edfa1eaff8e2280b579511b37eb455377405f3)</small></p>
               <!--<p><a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a></p>-->
             </div>
           </div>
         </div>
+
+
+        <div class="col-lg-12 col-md-12 hero-feature">
+          <div class="thumbnail">
+            <div class="caption">
+              <h1>Option 2: Automating script</h1>
+              <p>The second is a script to run in your favorite linux environment, that will download the Nxt software, start a local nxt node, and open a browser window to access your wallet.</p>
+              <p>The only pre-requisite is that Java 7 is available. The only live CD with Java 7 I have found is <a href="http://dl.sabayon.org/iso/Sabayon_Linux_14.01_amd64_Xfce.iso">Sabayon Linux Xfce 14.01</a> (1.4Gb).</p>
+              <p>I encourage you to use to script to run Nxt in a virtual machine having booted a live CD.</p>
+              <p>To run it, simply issue that command in a terminal window:</p>
+              <pre>
+wget -qO- https://raw.github.com/nextcoinbox/nextcoinbox/gh-pages/scripts/nextcoinbox-live.sh  | bash
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.row -->
+
+
+
+      
+      <div class="row text-center">
 
         <div class="col-lg-3 col-md-6 hero-feature">
           <div class="thumbnail">
@@ -87,17 +101,6 @@
               <h3>Securly manage and forge your Nextcoins</h3>
               <p>Running in an isolated environment, you limit the risk of malware getting access to your wallet.</p>
               <!-- <p><a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a></p>-->
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3 col-md-6 hero-feature">
-          <div class="thumbnail">
-            <img src="images/beta.png" alt="">
-            <div class="caption">
-              <h3>Beta version</h3>
-              <p>This is the first public release, and could contain bugs. You run this at your own risk.</p>
-              <!-- <p><a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a></p> -->
             </div>
           </div>
         </div>
@@ -114,6 +117,29 @@
         </div>
 
 
+        <div class="col-lg-3 col-md-6 hero-feature">
+          <div class="thumbnail">
+            <img src="images/beta.png" alt="">
+            <div class="caption">
+              <h3>Beta version</h3>
+              <p>This is the first public release, and could contain bugs. You run this at your own risk.</p>
+              <!-- <p><a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a></p> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 hero-feature">
+          <div class="thumbnail">
+            <img src="images/lifesaver.png" alt="">
+            <div class="caption">
+              <h3>Need support?</h3>
+              <p>I'm available for hire if you need help setup your Nxt environment. Only small interventions under linux, and only Nxt payments are accepted.</p>
+              <!--<p><a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a></p>-->
+            </div>
+          </div>
+        </div>
+
+
       </div><!-- /.row -->
       
       <hr>
@@ -122,6 +148,7 @@
         <div class="row">
           <div class="col-lg-12">
             <p>Copyright &copy; Nextcoinbox 2013</p>
+            <p><small>Lifesaver icon under CC by <a href="http://svengraph.deviantart.com/">svengraph</a></small></p>
           </div>
         </div>
       </footer>
