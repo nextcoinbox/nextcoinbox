@@ -18,7 +18,7 @@ fi
 downloaded_file=${file_url##*/}
 
 echo "Downloading file"
-#wget $file_url
+wget $file_url
 
 if  echo $expected_sha | sha1sum -c ; then
   # check is fine, we can continue
