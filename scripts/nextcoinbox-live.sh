@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+#set -x
 
 file_url='http://files.nxtbase.com/nrs-0.4.7e.zip'
 expected_sha='a30fb505e2f16709caba9f920436fb6db28c675b  nrs-0.4.7e.zip'
