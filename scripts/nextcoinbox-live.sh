@@ -1,8 +1,8 @@
 #!/bin/bash
 #set -x
 
-file_url='http://files.nxtbase.com/nrs-0.4.7e.zip'
-expected_sha='a30fb505e2f16709caba9f920436fb6db28c675b  nrs-0.4.7e.zip'
+file_url='http://info.nxtcrypto.org/nxt-client-0.4.8.zip'
+expected_sha='ec7c30a100717e60d8abe50eedb23641952847d91ff90b9b05a74ff98d8a4cf2  nxt-client-0.4.8.zip'
 welcome_url='http://nextcoinbox.github.io/nextcoinbox/live_homepage.html'
 
 if ! BROWSER=$(which firefox >/dev/null 2>/dev/null) ; then
