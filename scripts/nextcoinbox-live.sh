@@ -1,8 +1,8 @@
 #!/bin/bash
 #set -x
 
-file_url='http://info.nxtcrypto.org/nxt-client-0.4.8.zip'
-expected_sha='ec7c30a100717e60d8abe50eedb23641952847d91ff90b9b05a74ff98d8a4cf2	nxt-client-0.4.8.zip'
+file_url='http://download.nxtcrypto.org/nxt-client-0.5.6e.zip'
+expected_sha='680490992bc853bcfb988683f7c4de2d41e44636f4911a95544fd44f2d663762	nxt-client-0.5.6e.zip'
 welcome_url='http://nextcoinbox.github.io/nextcoinbox/live_homepage.html'
 
 if ! BROWSER=$(which firefox >/dev/null 2>/dev/null) ; then
@@ -45,7 +45,7 @@ if  echo $expected_sha | sha256sum -c ; then
   $BROWSER $welcome_url
 else
   # sha not correct
-  echo "the file downloaded might not be safe to use, stopping here. (sha1 incorrect)"
+  echo "the file downloaded might not be safe to use, stopping here. (sha incorrect)"
   exit 1
 fi
 
