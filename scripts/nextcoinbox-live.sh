@@ -1,7 +1,7 @@
 #!/bin/bash
 #set -x
 
-latest=$(wget -O - -q   http://download.nxtcrypto.org/  | html2text | awk '{print $1}' | egrep 'nxt.*zip$' | tail -n 1)
+latest=$(wget http://download.nxtcrypto.org -O - -q | grep nxt-client | tail -n 1 | sed -e 's/.*nxt-client-\(.*\)\.zip.*/nxt-client-\1.zip/')
 file_url="http://download.nxtcrypto.org/$latest"
 expected_sha=$(wget -O - -q http://download.nxtcrypto.org/$latest.sha256.txt.asc | grep $latest)
 welcome_url='http://nextcoinbox.github.io/nextcoinbox/live_homepage.html'
