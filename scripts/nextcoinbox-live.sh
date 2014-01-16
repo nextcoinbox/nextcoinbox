@@ -1,8 +1,9 @@
 #!/bin/bash
 #set -x
 
-file_url='http://download.nxtcrypto.org/nxt-client-0.5.6e.zip'
-expected_sha='680490992bc853bcfb988683f7c4de2d41e44636f4911a95544fd44f2d663762	nxt-client-0.5.6e.zip'
+latest=$(wget -O - -q   http://download.nxtcrypto.org/  | html2text | awk '{print $1}' | egrep 'nxt.*zip$' | tail -n 1)
+file_url="http://download.nxtcrypto.org/$latest"
+expected_sha=$(wget -O - -q http://download.nxtcrypto.org/$latest.sha256.txt.asc | grep $latest)
 welcome_url='http://nextcoinbox.github.io/nextcoinbox/live_homepage.html'
 
 if ! BROWSER=$(which firefox >/dev/null 2>/dev/null) ; then
